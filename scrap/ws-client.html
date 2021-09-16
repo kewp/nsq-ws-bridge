@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<title>Page Title</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="">
+<style>
+</style>
+<div id="messages"></div>
+<script>
+
+const nsq = {
+    Reader: function(topic, channel, opts) {
+
+        const { lookupdHTTPAddresses } = opts;
+        let ws;
+
+        if (!lookupdHTTPAddresses) console.trace('lookupdHTTPAddresses not specified in Reader options');
+
+        this.connect = function() {
+            console.log('running connect');
+            ws = new WebSocket('ws://'+lookupdHTTPAddresses);
+            ws.onopen = function(event) {
+                ws.send(JSON.stringify({
+                    'type': 'handshake',
+                    'topic': topic,
+                    'channel': channel
+                }))
+                ws.send('first connect message from browser');
+            }
+        }
+
+        this.on = function(evt, callback) {
+            if (evt=='message')
+            {
+                ws.onmessage = callback;
+            }
+            else
+            {
+                console.trace('unknown event for Reader: '+evt);
+            }
+        }
+    }
+};
+
+//const nsq = require('nsqjs')
+
+const reader = new nsq.Reader('browser_topic', 'browser_channel', {
+  lookupdHTTPAddresses: '127.0.0.1:8080'
+})
+
+reader.connect()
+
+let messages = [];
+
+reader.on('message', msg => {
+  console.log('msg',msg.data);
+  var tag = document.createElement("p");
+    var text = document.createTextNode(msg.data);
+   tag.appendChild(text);
+
+   var element = document.getElementById("messages");
+
+    element.appendChild(tag);
+
+  //console.log('Received message [%s]: %s', msg.id, msg.body.toString())
+  //msg.finish()
+})
+
+/*
+const ws = new WebSocket('ws://localhost:8080');
+
+console.log('ws',ws);
+
+ws.onopen = function open() {
+  ws.send('sent from browser client (on open)');
+};
+
+ws.onmessage = function incoming(message) {
+  console.log('received: %s', message);
+};
+*/nsq
+</script>
+<body>
+
+<div class="">
+ <h1>This is a Heading</h1>
+ <p>This is a paragraph.</p>
+ <p>This is another paragraph.</p>
+</div>
+
+</body>
+</html> 

@@ -1,0 +1,24 @@
+{
+  "name": "nsq-ws-bridge-nodejs",
+  "version": "1.0.0",
+  "description": "## background",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kewp/nsq-ws-bridge-nodejs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kewp/nsq-ws-bridge-nodejs/issues"
+  },
+  "homepage": "https://github.com/kewp/nsq-ws-bridge-nodejs#readme",
+  "dependencies": {
+    "nsqjs": "^0.13.0",
+    "ws": "^8.2.2"
+  }
+}
