@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/kewp/nsq-ws-bridge-nodejs#readme",
   "dependencies": {
+    "chokidar": "^3.5.2",
     "nsqjs": "^0.13.0",
     "ws": "^8.2.2"
   }

@@ -31,8 +31,9 @@ wss.on('connection', function connection(ws) {
 
                 reader.connect()
 
+                
                 reader.on('message', msg => {
-                    console.log('Received message [%s]: %s', msg.id, msg.body.toString())
+                    console.log('Received message [%s] on topic [%s]: %s', msg.id, topic, msg.body.toString())
                     wss.clients.forEach(function each(client) {
                         if (client.readyState === WebSocket.OPEN) {
                           client.send(msg.body.toString());

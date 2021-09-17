@@ -3,9 +3,13 @@
 <meta charset="UTF-8">
 <title>Page Title</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="">
+<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 <style>
 </style>
+<div class="flex">
+    <div><p>Filesystem Messages</p></div>
+    <div id="fs"></div>
+</div>
 <div id="messages"></div>
 <script>
 
@@ -44,6 +48,26 @@ const nsq = {
 };
 
 //const nsq = require('nsqjs')
+
+const fs_reader = new nsq.Reader('fs', 'browser_channel', {
+  lookupdHTTPAddresses: '127.0.0.1:8080'
+})
+
+fs_reader.connect()
+
+fs_reader.on('message', msg => {
+  console.log('fs msg',msg.data);
+  var tag = document.createElement("p");
+    var text = document.createTextNode(msg.data);
+   tag.appendChild(text);
+
+   var element = document.getElementById("fs");
+
+    element.appendChild(tag);
+
+  //console.log('Received message [%s]: %s', msg.id, msg.body.toString())
+  //msg.finish()
+})
 
 const reader = new nsq.Reader('browser_topic', 'browser_channel', {
   lookupdHTTPAddresses: '127.0.0.1:8080'
