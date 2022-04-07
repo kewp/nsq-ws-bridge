@@ -1,5 +1,6 @@
 
 const nsq = require('nsqjs')
+const WebSocket = require('ws');
 
 function log() {
     var args = Array.from(arguments); // ES5
@@ -9,7 +10,7 @@ function log() {
 
 let readers = {}
 
-function handle_obj(obj, ws) {
+function handle_obj(obj, ws, wss) {
     if (obj['type'] && obj['type']=='handshake')
     {
         let { topic, channel } = obj;
@@ -52,7 +53,7 @@ function handle_obj(obj, ws) {
 
 function get_server() {
 
-    const WebSocket = require('ws');
+    
     const wss = new WebSocket.WebSocketServer({ port: 8080 });
     
 
@@ -75,7 +76,7 @@ function get_server() {
 
             if (obj) {
                 log(' - trying to handle object');
-                try { handle_obj(obj, ws); }
+                try { handle_obj(obj, ws, wss); }
                 catch (e) { log(' - could not handle object:',e); }
             }
         }

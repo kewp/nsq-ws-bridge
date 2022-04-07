@@ -16,8 +16,7 @@ function setup(w) {
     // One-liner for current directory
     chokidar.watch('*.js').on('all', (event, path) => {
       log(event, path);
-      w.publish('fs', path)
-
+      w.publish('fs', 'event on ' + path);
     });
   })
 
@@ -36,7 +35,7 @@ module.exports = {
       const w = new nsq.Writer(host, port);
       setup(w);
     }
-    catch (e) { log('could not connect to',host,':',port,':',e); }
+    catch (e) { log('exception',e); }
 
   }
 }
