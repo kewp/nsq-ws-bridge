@@ -1,14 +1,42 @@
 const chokidar = require('chokidar');
 const nsq = require('nsqjs')
 
-const w = new nsq.Writer('127.0.0.1', 4150)
+function log() {
+  var args = Array.from(arguments); // ES5
+    args.unshift('[chokidar-server]');
+    console.log.apply(console, args);
+}
 
-w.connect()
+function setup(w) {
 
+  w.connect();
+  w.on('ready', () => {
+    log('writer ready');
 
-// One-liner for current directory
-chokidar.watch('.').on('all', (event, path) => {
-  console.log(event, path);
-  w.publish('fs', path)
+    // One-liner for current directory
+    chokidar.watch('*.js').on('all', (event, path) => {
+      log(event, path);
+      w.publish('fs', path)
 
-});
+    });
+  })
+
+  w.on('error', (e) => { log('writer error',e); })
+  w.on('close', () => { log('writer closed') })
+}
+
+module.exports = {
+  watch: function() {
+
+    log('starting chokidar watch');
+
+    const host = '127.0.0.1', port = 4150;
+    
+    try {
+      const w = new nsq.Writer(host, port);
+      setup(w);
+    }
+    catch (e) { log('could not connect to',host,':',port,':',e); }
+
+  }
+}

@@ -30,4 +30,20 @@ virtualConsole.sendTo(console);
 
 const dom = new JSDOM(file, { virtualConsole, runScripts: "dangerously" });
 
+// nsqd
+const { spawn } = require('child_process');
 
+log('spawning nsqlookupd')
+// nsqdLookupd Listens on 4161 for HTTP requests and 4160 for TCP requests
+spawn('nsqlookupd');
+
+log('spawning nsqd');
+spawn('nsqd',['-lookupd-tcp-address=127.0.0.1:4160','-broadcast-address=127.0.0.1']);
+
+// chokidar server
+
+log('starting chokidar dir watch');
+
+const { watch } = require('./scrap/chokidar-server.js');
+
+watch();
