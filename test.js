@@ -35,15 +35,20 @@ const { spawn } = require('child_process');
 
 log('spawning nsqlookupd')
 // nsqdLookupd Listens on 4161 for HTTP requests and 4160 for TCP requests
-//spawn('nsqlookupd');
+spawn('nsqlookupd');
 
-//log('spawning nsqd');
-//spawn('nsqd',['-lookupd-tcp-address=127.0.0.1:4160','-broadcast-address=127.0.0.1']);
+log('spawning nsqd');
+spawn('nsqd',['--lookupd-tcp-address=127.0.0.1:4160','--broadcast-address=127.0.0.1']);
 
-// chokidar server
+log('waiting one second');
 
-log('starting chokidar dir watch');
+setTimeout( () => {
+    // chokidar server
 
-const { watch } = require('./scrap/chokidar-server.js');
+    log('starting chokidar dir watch');
 
-watch();
+    const { watch } = require('./scrap/chokidar-server.js');
+
+    watch();
+}, 1000);
+
