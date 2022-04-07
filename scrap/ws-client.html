@@ -13,6 +13,12 @@
 <div id="messages"></div>
 <script>
 
+function log() {
+  var args = Array.from(arguments); // ES5
+    args.unshift('[browser]');
+    console.log.apply(console, args);
+}
+
 const nsq = {
     Reader: function(topic, channel, opts) {
 
@@ -22,7 +28,7 @@ const nsq = {
         if (!lookupdHTTPAddresses) console.trace('lookupdHTTPAddresses not specified in Reader options');
 
         this.connect = function() {
-            console.log('nsq.connect');
+            log('nsq.connect');
             ws = new WebSocket('ws://'+lookupdHTTPAddresses);
             ws.onopen = function(event) {
                 ws.send(JSON.stringify({
@@ -33,7 +39,7 @@ const nsq = {
                 ws.send('browser nsq reader: first connect message from browser');
               }
             ws.addEventListener('error', function (event) {
-              console.log('browser WebSocket error: ', event);
+              log('WebSocket error: ', event);
             });
         }
 
@@ -44,7 +50,7 @@ const nsq = {
             }
             else
             {
-                console.trace('browser nsq reader: unknown event: '+evt);
+                log('nsq reader: unknown event: '+evt);
             }
         }
     }
@@ -59,7 +65,7 @@ const fs_reader = new nsq.Reader('fs', 'browser_channel', {
 fs_reader.connect()
 
 fs_reader.on('message', msg => {
-  console.log('browser fs msg',msg.data);
+  log('browser fs msg',msg.data);
   var tag = document.createElement("p");
     var text = document.createTextNode(msg.data);
    tag.appendChild(text);
@@ -68,7 +74,7 @@ fs_reader.on('message', msg => {
 
     element.appendChild(tag);
 
-  //console.log('Received message [%s]: %s', msg.id, msg.body.toString())
+  //log('Received message [%s]: %s', msg.id, msg.body.toString())
   //msg.finish()
 })
 
@@ -81,7 +87,7 @@ reader.connect()
 let messages = [];
 
 reader.on('message', msg => {
-  console.log('browser reader msg',msg.data);
+  log('browser reader msg',msg.data);
   var tag = document.createElement("p");
     var text = document.createTextNode(msg.data);
    tag.appendChild(text);

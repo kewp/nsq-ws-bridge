@@ -22,7 +22,7 @@ function get_server() {
         //console.log('ws-server-lib ws.on message typeof:',typeof(message));
         if (typeof(message)==='object')
         {
-            log('on message - trying to parse object (',message.toString(),')');
+            log(' - trying to parse object (',message.toString(),')');
             
             let obj;
             try {
@@ -31,7 +31,7 @@ function get_server() {
                 if (obj['type'] && obj['type']=='handshake')
                 {
                     let { topic, channel } = obj;
-                    console.log('ws-server-lib ws.on message (received handshake for topic '+topic+' and channel '+channel+')');
+                    log(' - (received handshake for topic '+topic+' and channel '+channel+')');
                     const reader = new nsq.Reader(topic, channel, {
                         lookupdHTTPAddresses: '127.0.0.1:4161'
                     })
@@ -42,7 +42,7 @@ function get_server() {
 
                     
                     reader.on('message', msg => {
-                        console.log('ws-server-lib [nsq reader on message]: Received message [%s] on topic [%s]: %s', msg.id, topic, msg.body.toString())
+                        log('[nsq reader on message]: Received message [%s] on topic [%s]: %s', msg.id, topic, msg.body.toString())
                         wss.clients.forEach(function each(client) {
                             if (client.readyState === WebSocket.OPEN) {
                             client.send(msg.body.toString());
@@ -62,16 +62,16 @@ function get_server() {
                 }
                 else
                 {
-                    console.log('ws-server-lib on message: got strange object',obj)
+                    log(' - got strange object',obj)
                 }
             }
             catch (e) {
-                console.log('ws-server-lib on message exception: could not parse object:',e);
+                log(' - exception: could not parse object:',e);
                 
             }
             
         }
-        else console.log('ws-server-lib unknown message type received: %s', message);
+        else log(' - unknown message type: %s', message);
     });
 
     ws.send('sent from server (on first connection)');
