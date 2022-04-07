@@ -61,7 +61,8 @@ const nsq = {
 //const nsq = require('nsqjs')
 
 const fs_reader = new nsq.Reader('fs', 'browser_channel', {
-  lookupdHTTPAddresses: '127.0.0.1:8080'
+  lookupdHTTPAddresses: '127.0.0.1:8080',
+  maxInFlight: 10
 })
 
 fs_reader.connect()
@@ -81,7 +82,8 @@ fs_reader.on('message', msg => {
 })
 
 const reader = new nsq.Reader('browser_topic', 'browser_channel', {
-  lookupdHTTPAddresses: '127.0.0.1:8080'
+  lookupdHTTPAddresses: '127.0.0.1:8080',
+  maxInFlight: 10
 })
 
 reader.connect()
