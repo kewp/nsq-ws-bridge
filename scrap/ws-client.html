@@ -22,7 +22,7 @@ const nsq = {
         if (!lookupdHTTPAddresses) console.trace('lookupdHTTPAddresses not specified in Reader options');
 
         this.connect = function() {
-            console.log('running connect');
+            console.log('nsq.connect');
             ws = new WebSocket('ws://'+lookupdHTTPAddresses);
             ws.onopen = function(event) {
                 ws.send(JSON.stringify({
@@ -31,7 +31,10 @@ const nsq = {
                     'channel': channel
                 }))
                 ws.send('first connect message from browser');
-            }
+              }
+            ws.addEventListener('error', function (event) {
+              console.log('WebSocket error: ', event);
+            });
         }
 
         this.on = function(evt, callback) {
