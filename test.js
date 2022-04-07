@@ -1,6 +1,15 @@
 // run this test with node test.js
 // should work right off the bat
 
+
+const { get_server} = require('./scrap/ws-server-lib.js');
+
+console.log('starting server');
+
+let ws = get_server();
+
+// load ws-client.html
+
 const fs = require('fs');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;

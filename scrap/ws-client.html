@@ -30,10 +30,10 @@ const nsq = {
                     'topic': topic,
                     'channel': channel
                 }))
-                ws.send('first connect message from browser');
+                ws.send('browser nsq reader: first connect message from browser');
               }
             ws.addEventListener('error', function (event) {
-              console.log('WebSocket error: ', event);
+              console.log('browser WebSocket error: ', event);
             });
         }
 
@@ -44,7 +44,7 @@ const nsq = {
             }
             else
             {
-                console.trace('unknown event for Reader: '+evt);
+                console.trace('browser nsq reader: unknown event: '+evt);
             }
         }
     }
@@ -59,7 +59,7 @@ const fs_reader = new nsq.Reader('fs', 'browser_channel', {
 fs_reader.connect()
 
 fs_reader.on('message', msg => {
-  console.log('fs msg',msg.data);
+  console.log('browser fs msg',msg.data);
   var tag = document.createElement("p");
     var text = document.createTextNode(msg.data);
    tag.appendChild(text);
@@ -81,7 +81,7 @@ reader.connect()
 let messages = [];
 
 reader.on('message', msg => {
-  console.log('msg',msg.data);
+  console.log('browser reader msg',msg.data);
   var tag = document.createElement("p");
     var text = document.createTextNode(msg.data);
    tag.appendChild(text);
