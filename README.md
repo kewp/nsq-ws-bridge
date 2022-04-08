@@ -1,4 +1,4 @@
-# nsq websocket bridge nodejs
+# nsq websocket bridge
 
 ## background
 
