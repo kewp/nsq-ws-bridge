@@ -1,4 +1,3 @@
-# nsq websocket bridge
 
 ## background
 
