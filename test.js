@@ -7,11 +7,11 @@ function log() {
     console.log.apply(console, args);
 }
 
-const { get_server} = require('./scrap/ws-server-lib.js');
+const { start_bridge_server} = require('./scrap/ws-server-lib.js');
 
-log('starting server');
+log('starting bridge server');
 
-let ws = get_server();
+start_bridge_server();
 
 // load ws-client.html
 

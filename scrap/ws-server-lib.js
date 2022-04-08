@@ -51,15 +51,11 @@ function handle_obj(obj, ws, wss) {
     }
 }
 
-function get_server() {
+function start_bridge_server() {
 
-    
     const wss = new WebSocket.WebSocketServer({ port: 8080 });
-    
 
-    
-
-    const timer = ms => new Promise( res => setTimeout(res, ms));
+    // const timer = ms => new Promise( res => setTimeout(res, ms));
 
     wss.on('connection', function connection(ws) {
     ws.on('message', function incoming(message) {
@@ -89,4 +85,4 @@ function get_server() {
     });
 
 }
-module.exports = { get_server }
+module.exports = { start_bridge_server }
